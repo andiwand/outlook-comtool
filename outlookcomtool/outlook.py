@@ -1,5 +1,7 @@
 import win32com.client
-import util
+import outlookcomtool.util as util
+
+OlInspectorClose_olDiscard = 1
 
 class Outlook:
     def __init__(self):
@@ -15,15 +17,22 @@ class Outlook:
     def get_contacts(self, store=None):
         folder = self.get_contact_folder(store)
         for i in range(1, folder.Items.Count + 1):
-            yield folder.Items.Item(i)
+            contact = folder.Items.Item(i)
+            if contact.Class != win32com.client.constants.olContact: continue
+            yield contact
+            contact.Close(win32com.client.constants.olDiscard)
 
-def contact_attributes(contact):
+def contact_list_attributes(contact):
+    return [key for key in contact._prop_map_get_]
+
+def contact_attributes(contact, attributes=None):
     result = {}
     for key in contact._prop_map_get_:
+        if attributes is not None and key not in attributes: continue
         try:
             value = getattr(contact, key)
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
         if not util.check_type(value): continue
         result[key] = util.fix_type(value)
     return result
