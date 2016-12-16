@@ -33,7 +33,7 @@ def extra(contact):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="outlook filter tool")
-    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,Email1Address,Email2Address,Email3Address,HomeAddressCountry,BusinessAddressCountry")
+    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
     parser.add_argument("-i", "--input", help="input file", required=True)
     parser.add_argument("-o", "--output", help="output file", required=True)
     args = parser.parse_args()

@@ -81,6 +81,7 @@ if __name__ == "__main__":
     o = outlook.Outlook()
     contacts = o.get_contacts(args.account)
     attributes = args.attributes.split(",")
+    if len(attributes) == 0: attributes = None
     
     out = sys.stdout
     close = False
