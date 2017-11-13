@@ -33,7 +33,7 @@ def extra(contact, extras):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="outlook filter tool")
     parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
-    parser.add_argument("-e", "--extra", help="parse body for extra information (comma separated)", default="DU / SIE, Frau / Herr, Sprachen")
+    parser.add_argument("-e", "--extra", help="parse body for extra information (comma separated)", default="DU / SIE,Frau / Herr,Sprachen")
     parser.add_argument("-i", "--input", help="input file", required=True)
     parser.add_argument("-o", "--output", help="output file", required=True)
     args = parser.parse_args()
@@ -46,9 +46,9 @@ if __name__ == "__main__":
     contacts = json.load(fin)
     fin.close()
 
-    csvwriter = csv.writer(fout, delimiter=",", quotechar="\"", quoting=csv.QUOTE_ALL)
+    csvwriter = csv.writer(fout, lineterminator="\n", delimiter=",", quotechar="\"", quoting=csv.QUOTE_ALL)
 
-    csvwriter.writerow(attributes + extra_columns())
+    csvwriter.writerow(attributes + extras)
     for i, contact in enumerate(contacts):
         print(i, contact["FullName"])
         row = [contact[key] for key in attributes]

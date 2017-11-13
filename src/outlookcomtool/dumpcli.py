@@ -80,7 +80,7 @@ def dump_contacts_photos(contacts, path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="outlook win32com tool")
-    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="")
+    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address,Body")
     parser.add_argument("-m", "--mode", help="opperation mode (dump, dump_photos, list_attr)", default="dump")
     parser.add_argument("-o", "--output", help="output file")
     parser.add_argument("account", help="email address of the account")
