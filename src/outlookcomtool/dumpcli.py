@@ -10,6 +10,14 @@ import argparse
 import pywintypes
 import outlookcomtool.outlook as outlook
 
+class GeneratorList(list):
+    def __init__(self, gen):
+        self.__gen = gen
+    def __iter__(self):
+        return self.__gen
+    def __len__(self):
+        return 1
+
 def fix_contacts_birthdays(contacts, startAfter=None):
     do = not startAfter
     tmpbd = pywintypes.Time(time.time())
@@ -42,7 +50,6 @@ def find_contact(name, contacts):
     pass
 
 def dump_contacts(contacts, attributes=None):
-    result = []
     for n, contact in enumerate(contacts):
         print(n, contact.FullName.encode("utf8", errors="replace"))
         single = outlook.contact_attributes(contact, attributes)
@@ -53,8 +60,7 @@ def dump_contacts(contacts, attributes=None):
             if type(value) == buffer:
                 value = base64.b64encode(value)
             single[key] = value
-        result.append(single)
-    return result
+        yield single
 
 def dump_contacts_photos(contacts, path):
     fs_enc = sys.getfilesystemencoding()
@@ -98,7 +104,8 @@ if __name__ == "__main__":
             print(attribute)
     if args.mode == "dump":
         d = dump_contacts(contacts, attributes)
-        json.dump(d, out, sort_keys=True, indent=4, separators=(",", ": "))
+        g = GeneratorList(d)
+        json.dump(g, out, sort_keys=True, indent=4, separators=(",", ": "))
     if args.mode == "dump_photos":
         dump_contacts_photos(contacts, r"C:\Users\stefl\Desktop\logsol\tmp")
 
