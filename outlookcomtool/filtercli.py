@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import gzip
 import json
 import csv
@@ -20,11 +22,8 @@ def parse_body(body):
         last = match.group(1)
     return result
 
-def extra_columns():
-    return ["DU / SIE", "Frau / Herr", "Sprachen"]
-
-def extra(contact):
-    columns = extra_columns()
+def extra(contact, extras):
+    columns = extras
     result = [""] * len(columns)
     extra = parse_body(contact["Body"])
     for i, column in enumerate(columns):
@@ -34,26 +33,27 @@ def extra(contact):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="outlook filter tool")
     parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
+    parser.add_argument("-e", "--extra", help="parse body for extra information (comma separated)", default="DU / SIE, Frau / Herr, Sprachen")
     parser.add_argument("-i", "--input", help="input file", required=True)
     parser.add_argument("-o", "--output", help="output file", required=True)
     args = parser.parse_args()
-    
+
     fin = gzip.open(args.input) if args.input.endswith(".gz") else open(args.input, "r")
     fout = open(args.output, "w")
     attributes = args.attributes.split(",")
-    
+    extras = args.extra.split(",")
+
     contacts = json.load(fin)
     fin.close()
-    
+
     csvwriter = csv.writer(fout, delimiter=",", quotechar="\"", quoting=csv.QUOTE_ALL)
-    
+
     csvwriter.writerow(attributes + extra_columns())
     for i, contact in enumerate(contacts):
         print(i, contact["FullName"])
         row = [contact[key] for key in attributes]
-        row.extend(extra(contact))
+        if extras: row.extend(extra(contact, extras))
         row = [cell.encode("utf-8") for cell in row]
         csvwriter.writerow(row)
 
     fout.close()
-    

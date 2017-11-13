@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import os
 import sys
 import time
@@ -11,7 +13,7 @@ import outlookcomtool.outlook as outlook
 def fix_contacts_birthdays(contacts, startAfter=None):
     do = not startAfter
     tmpbd = pywintypes.Time(time.time())
-    
+
     for n, contact in enumerate(contacts):
         if not do:
             do = contact.FullName == startAfter
@@ -77,19 +79,19 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="output file")
     parser.add_argument("account", help="email address of the account")
     args = parser.parse_args()
-    
+
     o = outlook.Outlook()
     contacts = o.get_contacts(args.account)
-    attributes = args.attributes.split(",")
-    if len(attributes) == 0: attributes = None
-    
+    attributes = [a for a in args.attributes.split(",") if a]
+    if not attributes: attributes = None
+
     out = sys.stdout
     close = False
-    
+
     if args.output:
         out = open(args.output, "w")
         close = True
-    
+
     if args.mode == "list_attr":
         contact = next(contacts)
         for attribute in outlook.contact_list_attributes(contact):
@@ -99,13 +101,13 @@ if __name__ == "__main__":
         json.dump(d, out, sort_keys=True, indent=4, separators=(",", ": "))
     if args.mode == "dump_photos":
         dump_contacts_photos(contacts, r"C:\Users\stefl\Desktop\logsol\tmp")
-    
+
     #print(count_contacts_birthdays(contacts))
-    
+
     #fix_contacts_birthdays(contacts, startAfter="")
-    
+
     #contact = find_contact("andreas stefl", contacts)
     #pprint(outlook.contact_attributes(contact))
-    
+
     out.flush()
     if close: out.close()
