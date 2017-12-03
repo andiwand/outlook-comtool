@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import sys
 import gzip
 import json
 import csv
@@ -30,9 +31,9 @@ def extra(contact, extras):
         if column in extra: result[i] = extra[column]
     return result
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="outlook filter tool")
-    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
+def main():
+    parser = argparse.ArgumentParser(description="Filter script for exported Microsoft Outlook contacts.")
+    parser.add_argument("--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
     parser.add_argument("-e", "--extra", help="parse body for extra information (comma separated)", default="DU / SIE,Frau / Herr,Sprachen")
     parser.add_argument("-i", "--input", help="input file", required=True)
     parser.add_argument("-o", "--output", help="output file", required=True)
@@ -57,3 +58,8 @@ if __name__ == "__main__":
         csvwriter.writerow(row)
 
     fout.close()
+	return 0
+
+if __name__ == "__main__":
+    code = main()
+	sys.exit(code)

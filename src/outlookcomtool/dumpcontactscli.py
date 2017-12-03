@@ -78,22 +78,30 @@ def dump_contacts_photos(contacts, path):
                 print("error: file already exists: %s" % photo_path)
             attachement.SaveAsFile(photo_path)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="outlook win32com tool")
-    parser.add_argument("-a", "--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address,Body")
-    parser.add_argument("-m", "--mode", help="opperation mode (dump, dump_photos, list_attr)", default="dump")
-    parser.add_argument("-o", "--output", help="output file")
-    parser.add_argument("account", help="email address of the account")
+def main():
+    parser = argparse.ArgumentParser(description="Export script for Microsoft Outlook contacts.")
+    parser.add_argument("--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address,Body")
+    parser.add_argument("-m", "--mode", help="opperation mode (dump, dump_photos, list_attr, list_acc)", default="dump")
+    parser.add_argument("-o", "--output", help="output file/directory")
+    parser.add_argument("-a", "--account", help="email address of the account")
     args = parser.parse_args()
 
     o = outlook.Outlook()
+    accounts = o.get_accounts()
+    if args.mode == "list_acc":
+        for a in accounts:
+			print(a)
+        return 0
+    if args.account not in accounts:
+        print("account not found")
+        return 2
+
     contacts = o.get_contacts(args.account)
     attributes = [a for a in args.attributes.split(",") if a]
     if not attributes: attributes = None
 
     out = sys.stdout
     close = False
-
     if args.output:
         out = open(args.output, "w")
         close = True
@@ -102,19 +110,20 @@ if __name__ == "__main__":
         contact = next(contacts)
         for attribute in outlook.contact_list_attributes(contact):
             print(attribute)
-    if args.mode == "dump":
+    elif args.mode == "dump":
         d = dump_contacts(contacts, attributes)
         g = GeneratorList(d)
         json.dump(g, out, sort_keys=True, indent=4, separators=(",", ": "))
-    if args.mode == "dump_photos":
-        dump_contacts_photos(contacts, r"C:\Users\stefl\Desktop\logsol\tmp")
-
-    #print(count_contacts_birthdays(contacts))
-
-    #fix_contacts_birthdays(contacts, startAfter="")
-
-    #contact = find_contact("andreas stefl", contacts)
-    #pprint(outlook.contact_attributes(contact))
+    elif args.mode == "dump_photos":
+        dump_contacts_photos(contacts, args.output)
+    else:
+        print("unknown option")
+        return 1
 
     out.flush()
     if close: out.close()
+    return 0
+
+if __name__ == "__main__":
+    code = main()
+    sys.exit(code)
