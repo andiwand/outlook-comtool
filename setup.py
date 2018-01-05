@@ -5,9 +5,6 @@ setup(
     version="0.0.1",
     url="https://github.com/andiwand/outlook-comtool",
     author="Andreas Stefl",
-    install_requires=[
-        'win32com;platform_system=="Windows"'
-    ],
     author_email="stefl.andreas@gmail.com",
     description="Microsoft Outlook win32com script collection.",
     long_description="",
@@ -15,7 +12,9 @@ setup(
     packages=["outlookcomtool"],
     platforms=["windows"],
     entry_points={
-        "console_scripts": ["outlook-dumpcontacts = outlookbackup.dumpcontactscli:main"],
-		"console_scripts": ["outlook-filtercontacts = outlookbackup.filtercontactscli:main"]
+        "console_scripts": [
+			"outlook-dumpcontacts = outlookcomtool.dumpcontactscli:main",
+			"outlook-filtercontacts = outlookcomtool.filtercontactscli:main"
+		]
     },
 )

@@ -34,7 +34,7 @@ def extra(contact, extras):
 def main():
     parser = argparse.ArgumentParser(description="Filter script for exported Microsoft Outlook contacts.")
     parser.add_argument("--attributes", help="filter attributes (comma separated)", default="FullName,FirstName,LastName,Title,Suffix,HomeAddressCountry,BusinessAddressCountry,Categories,Email1Address,Email2Address,Email3Address")
-    parser.add_argument("-e", "--extra", help="parse body for extra information (comma separated)", default="DU / SIE,Frau / Herr,Sprachen")
+    parser.add_argument("--extra", help="parse body for extra information (comma separated)", default="DU / SIE,Frau / Herr,Sprachen")
     parser.add_argument("-i", "--input", help="input file", required=True)
     parser.add_argument("-o", "--output", help="output file", required=True)
     args = parser.parse_args()
