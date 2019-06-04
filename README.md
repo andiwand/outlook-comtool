@@ -8,8 +8,8 @@ pip install https://github.com/andiwand/outlook-comtool/archive/master.zip
 
 ## outlook-dumpcontacts
 ```
-usage: outlook-dumpcontacts [-h] [--attributes ATTRIBUTES] [-e EXTRA] -i INPUT
-                            -o OUTPUT
+usage: outlook-dumpcontacts [-h] [--attributes ATTRIBUTES] [-m MODE] [-o OUTPUT]
+                            [-a ACCOUNT]
 
 Export script for Microsoft Outlook contacts.
 
@@ -27,8 +27,8 @@ optional arguments:
 
 ## outlook-filtercontacts
 ```
-usage: outlook-filtercontacts [-h] [--attributes ATTRIBUTES] [-m MODE] [-o OUTPUT]
-                              [-a ACCOUNT]
+usage: outlook-filtercontacts [-h] [--attributes ATTRIBUTES] [-e EXTRA] -i INPUT
+                              -o OUTPUT
 
 Filter script for exported Microsoft Outlook contacts.
 
