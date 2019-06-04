@@ -11,25 +11,6 @@ pip install https://github.com/andiwand/outlook-comtool/archive/master.zip
 usage: outlook-dumpcontacts [-h] [--attributes ATTRIBUTES] [-e EXTRA] -i INPUT
                             -o OUTPUT
 
-Filter script for exported Microsoft Outlook contacts.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --attributes ATTRIBUTES
-                        filter attributes (comma separated)
-  -e EXTRA, --extra EXTRA
-                        parse body for extra information (comma separated)
-  -i INPUT, --input INPUT
-                        input file
-  -o OUTPUT, --output OUTPUT
-                        output file
-```
-
-## outlook-filtercontacts
-```
-usage: outlook-filtercontacts [-h] [--attributes ATTRIBUTES] [-m MODE] [-o OUTPUT]
-                              [-a ACCOUNT]
-
 Export script for Microsoft Outlook contacts.
 
 optional arguments:
@@ -42,4 +23,23 @@ optional arguments:
                         output file/directory
   -a ACCOUNT, --account ACCOUNT
                         email address of the account
+```
+
+## outlook-filtercontacts
+```
+usage: outlook-filtercontacts [-h] [--attributes ATTRIBUTES] [-m MODE] [-o OUTPUT]
+                              [-a ACCOUNT]
+
+Filter script for exported Microsoft Outlook contacts.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --attributes ATTRIBUTES
+                        filter attributes (comma separated)
+  -e EXTRA, --extra EXTRA
+                        parse body for extra information (comma separated)
+  -i INPUT, --input INPUT
+                        input file
+  -o OUTPUT, --output OUTPUT
+                        output file
 ```
